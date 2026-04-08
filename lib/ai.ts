@@ -1,4 +1,4 @@
-import { OAEvaluationResult, DailyEvaluationResult, OAPayload, Difficulty } from "@/lib/types";
+import { OAEvaluationResult, DailyEvaluationResult, OAPayload, Difficulty, VisualizationData } from "@/lib/types";
 
 const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK_AI !== "false";
 
@@ -62,6 +62,85 @@ function getMockDailyResult(): DailyEvaluationResult {
     days_until_repetition: 3,
   };
 }
+
+// ─── X-Ray Visualizer Mock Data ──────────────────────────────────────────────
+
+/**
+ * Mock visualization for "Two Sum II" using the Two-Pointer technique.
+ * Array: [2, 7, 11, 15], target: 9
+ */
+export const MOCK_VISUALIZER_DATA: VisualizationData = {
+  algorithm_name: "Two-Pointer (Two Sum II)",
+  total_steps: 6,
+  steps: [
+    {
+      step_number: 1,
+      explanation:
+        "Initialize two pointers: L at the start (index 0, value 2) and R at the end (index 3, value 15). We will move them toward each other based on the sum.",
+      visual_state: {
+        data_structure_type: "array",
+        array_values: [2, 7, 11, 15],
+        pointers: { L: 0, R: 3 },
+        highlighted_indexes: [0, 3],
+      },
+    },
+    {
+      step_number: 2,
+      explanation:
+        "Current sum = nums[L] + nums[R] = 2 + 15 = 17. This is greater than target (9), so we move R one step left to decrease the sum.",
+      visual_state: {
+        data_structure_type: "array",
+        array_values: [2, 7, 11, 15],
+        pointers: { L: 0, R: 3 },
+        highlighted_indexes: [0, 3],
+      },
+    },
+    {
+      step_number: 3,
+      explanation:
+        "R moves from index 3 → index 2. Now sum = nums[L] + nums[R] = 2 + 11 = 13. Still greater than 9, so we move R left again.",
+      visual_state: {
+        data_structure_type: "array",
+        array_values: [2, 7, 11, 15],
+        pointers: { L: 0, R: 2 },
+        highlighted_indexes: [0, 2],
+      },
+    },
+    {
+      step_number: 4,
+      explanation:
+        "R moves from index 2 → index 1. Now sum = nums[L] + nums[R] = 2 + 7 = 9. This equals the target!",
+      visual_state: {
+        data_structure_type: "array",
+        array_values: [2, 7, 11, 15],
+        pointers: { L: 0, R: 1 },
+        highlighted_indexes: [0, 1],
+      },
+    },
+    {
+      step_number: 5,
+      explanation:
+        "Sum matches! The answer is [L+1, R+1] = [1, 2] (1-indexed). Both L and R are on the winning pair. No further moves needed.",
+      visual_state: {
+        data_structure_type: "array",
+        array_values: [2, 7, 11, 15],
+        pointers: { L: 0, R: 1 },
+        highlighted_indexes: [0, 1],
+      },
+    },
+    {
+      step_number: 6,
+      explanation:
+        "Result: indices [1, 2] (1-indexed). Time complexity: O(n) — we only scanned the array once with two pointers. Space: O(1) — no extra data structures needed.",
+      visual_state: {
+        data_structure_type: "array",
+        array_values: [2, 7, 11, 15],
+        pointers: { L: 0, R: 1 },
+        highlighted_indexes: [0, 1],
+      },
+    },
+  ],
+};
 
 // ─── Real AI Call ─────────────────────────────────────────────────────────────
 

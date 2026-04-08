@@ -109,3 +109,22 @@ export interface TestCase {
   expected: string;
   description: string;
 }
+
+// ─── X-Ray Logic Visualizer Types ────────────────────────────────────────────
+
+export interface VisualizerStep {
+  step_number: number;
+  explanation: string;
+  visual_state: {
+    data_structure_type: "array" | "string";
+    array_values: (number | string)[];
+    pointers: Record<string, number>; // e.g., { "L": 0, "R": 4 }
+    highlighted_indexes: number[];
+  };
+}
+
+export interface VisualizationData {
+  algorithm_name: string;
+  total_steps: number;
+  steps: VisualizerStep[];
+}
