@@ -9,7 +9,6 @@ import SubmitModal from "@/components/ui/SubmitModal";
 import XRayVisualizer from "@/components/ui/XRayVisualizer";
 import { useAppContext } from "@/context/AppContext";
 import { DailyTask, UserRoadmap, Difficulty } from "@/lib/types";
-import { MOCK_VISUALIZER_DATA } from "@/lib/ai";
 
 // Fallback roadmap for demo / no-calibration access
 const DEMO_ROADMAP: UserRoadmap = {
@@ -313,7 +312,7 @@ export default function DashboardPage() {
               </div>
 
               {/* Visualizer */}
-              <XRayVisualizer data={MOCK_VISUALIZER_DATA} />
+              <XRayVisualizer />
             </motion.div>
           </motion.div>
         )}
