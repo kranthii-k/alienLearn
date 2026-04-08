@@ -79,12 +79,12 @@ export default function SkillRadarChart({ scores, rank }: SkillRadarChartProps) 
       {/* Radar Chart */}
       <motion.div
         className="w-full"
-        style={{ height: 320 }}
+        style={{ height: 320, minHeight: 320, minWidth: 0 }}
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 0.3, duration: 0.6 }}
       >
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width="100%" height={320}>
           <RadarChart data={data} margin={{ top: 10, right: 30, bottom: 10, left: 30 }}>
             <PolarGrid
               stroke="rgba(56,189,248,0.12)"

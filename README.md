@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 👽 Alien Learn — AI-Powered Placement Prep
 
-## Getting Started
+A full-stack Next.js 16 application with an AI-driven calibration engine that builds personalized 7-day spaced repetition roadmaps for technical placement preparation.
 
-First, run the development server:
+## ✨ Features
+
+- **Track Selection** — Choose DSA, React, or TypeScript tracks
+- **Calibration OA** — Monaco-powered split-screen coding assessment (45 min, 3 problems)
+- **AI Analysis** — Deep skill profiling across 5 vectors: Logic, Optimization, Clean Code, Speed, Edge Cases
+- **Alien Rank System** — 7 tiers from "Code Padawan" to "Grand Master Coder"
+- **7-Day Roadmap** — Personalized spaced-repetition daily problems
+- **Daily Feedback** — AI evaluates each submission with targeted next steps
+
+## 🛠 Tech Stack
+
+| | |
+|---|---|
+| Framework | Next.js 16 (App Router, TypeScript) |
+| Styling | Tailwind CSS v4 |
+| Animation | Framer Motion 12 |
+| Code Editor | @monaco-editor/react |
+| Charts | Recharts |
+| State | React Context + localStorage |
+| AI Backend | DeepSeek API (mock mode by default) |
+
+## 🚀 Getting Started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) — it redirects to `/alien-learn`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🔧 Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a `.env.local` file:
 
-## Learn More
+```env
+# Use mock AI (no API key needed)
+NEXT_PUBLIC_USE_MOCK_AI=true
 
-To learn more about Next.js, take a look at the following resources:
+# To use real DeepSeek AI, set this and change MOCK to false:
+# DEEPSEEK_API_KEY=your_key_here
+# NEXT_PUBLIC_USE_MOCK_AI=false
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📁 Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+app/
+  alien-learn/
+    page.tsx           # Track selection
+    calibration/       # OA with Monaco editor
+    results/           # AI reveal + radar chart
+    dashboard/         # Daily roadmap + task cards
+  api/
+    evaluate-oa/       # POST: OA assessment → AI roadmap
+    evaluate-daily/    # POST: Daily code → AI feedback
+components/ui/
+  TrackCard.tsx        # Glassmorphic track selector
+  CodeArena.tsx        # Monaco editor + timer + terminal
+  AILoadingState.tsx   # Hacker terminal loading overlay
+  SkillRadarChart.tsx  # Pentagon radar with Recharts
+  DailyRoadmapView.tsx # 7-day timeline stepper
+  TaskCard.tsx         # Daily problem card
+  SubmitModal.tsx      # Code paste + AI feedback modal
+  CalibrationModal.tsx # Pre-assessment confirmation
+context/
+  AppContext.tsx        # Global state + localStorage
+lib/
+  types.ts             # All TypeScript interfaces
+  tracks.ts            # Calibration problem data
+  ai.ts                # AI wrapper (mock + real)
+```
 
-## Deploy on Vercel
+## 🎨 Design System
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Background**: Deep space (`#020817`) with star-field
+- **Glassmorphism cards**: `backdrop-blur(12px)` with `rgba` borders
+- **Cyber Blue** `#38bdf8` — AI actions, links
+- **Neon Green** `#4ade80` — Success, completions, streak
+- **Typography**: Inter (UI) + JetBrains Mono (code)
