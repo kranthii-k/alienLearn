@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import DailyRoadmapView from "@/components/ui/DailyRoadmapView";
 import TaskCard from "@/components/ui/TaskCard";
 import SubmitModal from "@/components/ui/SubmitModal";
+import XRayVisualizer from "@/components/ui/XRayVisualizer";
 import { useAppContext } from "@/context/AppContext";
 import { DailyTask, UserRoadmap, Difficulty } from "@/lib/types";
+import { MOCK_VISUALIZER_DATA } from "@/lib/ai";
 
 // Fallback roadmap for demo / no-calibration access
 const DEMO_ROADMAP: UserRoadmap = {
@@ -84,6 +86,7 @@ export default function DashboardPage() {
   const { state, dispatch } = useAppContext();
   const [submitTask, setSubmitTask] = useState<DailyTask | null>(null);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const [visualizerTask, setVisualizerTask] = useState<DailyTask | null>(null);
 
   const roadmap = state.roadmap ?? DEMO_ROADMAP;
   const rank = state.alienRank ?? "Recursion Ranger";
@@ -227,11 +230,14 @@ export default function DashboardPage() {
             </div>
           ) : (
             <div className="flex flex-col gap-4">
-              {todayTasks.map((task) => (
+              {todayTasks.map((task, idx) => (
                 <TaskCard
                   key={task.id}
                   task={task}
                   onSubmit={(t) => setSubmitTask(t)}
+                  // Give the first task the X-Ray Mentor button as a demo
+                  hasVisualizer={idx === 0}
+                  onOpenVisualizer={(t) => setVisualizerTask(t)}
                 />
               ))}
             </div>
@@ -266,6 +272,52 @@ export default function DashboardPage() {
           onSubmit={handleSubmit}
         />
       )}
+
+      {/* X-Ray Visualizer Modal */}
+      <AnimatePresence>
+        {visualizerTask && (
+          <motion.div
+            key="xray-modal"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{ background: "rgba(2,8,23,0.88)" }}
+            onClick={(e) => e.target === e.currentTarget && setVisualizerTask(null)}
+          >
+            <motion.div
+              className="w-full max-w-2xl"
+              initial={{ y: 32, scale: 0.97, opacity: 0 }}
+              animate={{ y: 0, scale: 1, opacity: 1 }}
+              exit={{ y: 32, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 280, damping: 24 }}
+            >
+              {/* Modal header strip */}
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: "#38bdf8" }}>
+                    X-Ray Logic Visualizer
+                  </p>
+                  <p className="text-sm font-bold" style={{ color: "var(--text-primary)" }}>
+                    {visualizerTask.title}
+                  </p>
+                </div>
+                <button
+                  id="xray-modal-close"
+                  onClick={() => setVisualizerTask(null)}
+                  className="w-8 h-8 rounded-lg flex items-center justify-center text-lg transition-colors hover:bg-white/5"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Visualizer */}
+              <XRayVisualizer data={MOCK_VISUALIZER_DATA} />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }
