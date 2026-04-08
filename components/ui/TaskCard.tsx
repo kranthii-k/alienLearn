@@ -6,6 +6,9 @@ import { DailyTask } from "@/lib/types";
 interface TaskCardProps {
   task: DailyTask;
   onSubmit: (task: DailyTask) => void;
+  /** If true, shows the "Unlock X-Ray Mentor" button */
+  hasVisualizer?: boolean;
+  onOpenVisualizer?: (task: DailyTask) => void;
 }
 
 const difficultyConfig = {
@@ -14,7 +17,7 @@ const difficultyConfig = {
   Hard: { class: "badge-hard", label: "Hard" },
 };
 
-export default function TaskCard({ task, onSubmit }: TaskCardProps) {
+export default function TaskCard({ task, onSubmit, hasVisualizer = false, onOpenVisualizer }: TaskCardProps) {
   const diff = difficultyConfig[task.difficulty];
   const isCompleted = task.status === "completed";
 
@@ -85,7 +88,7 @@ export default function TaskCard({ task, onSubmit }: TaskCardProps) {
       )}
 
       {/* Actions */}
-      <div className="flex items-center gap-3 mt-1">
+      <div className="flex items-center gap-3 mt-1 flex-wrap">
         <a
           href={task.externalLink}
           target="_blank"
@@ -100,6 +103,33 @@ export default function TaskCard({ task, onSubmit }: TaskCardProps) {
           </svg>
           Open on LeetCode
         </a>
+
+        {/* X-Ray Mentor button — shown when hasVisualizer is true and not completed */}
+        {hasVisualizer && !isCompleted && (
+          <motion.button
+            id={`xray-btn-${task.id}`}
+            className="text-xs py-2 px-3 rounded-xl font-semibold flex items-center gap-1.5"
+            style={{
+              color: "#38bdf8",
+              border: "1px solid rgba(56,189,248,0.4)",
+              background: "rgba(56,189,248,0.06)",
+              fontSize: "0.8rem",
+            }}
+            animate={{
+              boxShadow: [
+                "0 0 0px rgba(56,189,248,0)",
+                "0 0 12px rgba(56,189,248,0.35)",
+                "0 0 0px rgba(56,189,248,0)",
+              ],
+            }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            whileHover={{ scale: 1.04, background: "rgba(56,189,248,0.12)" }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => onOpenVisualizer?.(task)}
+          >
+            👁️ Unlock X-Ray Mentor
+          </motion.button>
+        )}
 
         {!isCompleted && (
           <button
